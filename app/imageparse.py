@@ -17,6 +17,9 @@ class ImageParse:
        
 
     def parse(self):
+        """
+         Some prompt instructions and definitions of what to encode from the image and the structure of the response.
+        """
         response = self._client.chat.completions.create(
             model="gpt-4o",
             messages= [
