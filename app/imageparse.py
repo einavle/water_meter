@@ -1,6 +1,9 @@
 import base64
 from openai import OpenAI
 import json
+import io
+from PIL import Image
+import base64
 
 
 class ImageParse:
@@ -10,7 +13,7 @@ class ImageParse:
 
     def __init__(self,image) -> None:
         self._client = OpenAI()
-        self._base64_image=base64.b64encode(image.read()).decode('utf-8')
+        self._base64_image=self.convertImage(image)
        
 
     def parse(self):
@@ -18,7 +21,7 @@ class ImageParse:
             model="gpt-4o",
             messages= [
                 {"role": "system", "content": "The meter_number is a printed serial number"},
-                {"role": "system", "content": "The counting number is a six digit number separated by line delimiter"},
+                {"role": "system", "content": "The counting_number is a six digit number separated by line delimiter"},
                 {"role": "system", "content": "each digit of the counting_number is printed on top of a rotating wheel"},
                 {"role": "system", "content": "The required_response is a json format including meter_number counting_number"},
                 {
@@ -55,6 +58,17 @@ class ImageParse:
     
     def save(self):
         return self._base64_image
+    
+    def resizeImage(self,f):
+        img = Image.open(f)
+        img = img.resize((300, 300))
+        buffered = io.BytesIO()
+        img.save(buffered, format="PNG")
+        img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+        return img_str
+    
+    def convertImage(self,f):
+        return base64.b64encode(f.read()).decode('utf-8')
 
 
 

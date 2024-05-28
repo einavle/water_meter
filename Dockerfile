@@ -5,9 +5,10 @@ RUN  pip install -r requirements.txt
 RUN mkdir templates
 COPY app/* .
 COPY templates/* ./templates
-ENV OPENAI_API_KEY="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"
+ARG OPENAI_API_KEY
+ENV OPENAI_API_KEY=$OPENAI_API_KEY
 ENTRYPOINT [ "python" ]
 CMD ["app.py" ]
 
-# docker build --platform linux/arm64 -t cybereason/einav-flask-tst:1.2 .
-# docker run -p 80:5001  cybereason/einav-flask-tst:1.3
+# docker build --platform linux/arm64 --build-arg OPENAI_API_KEY -t cybereason/einav-flask-tst:1.10 .
+# docker run -p 5001:5001  cybereason/einav-flask-tst:1.10

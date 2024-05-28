@@ -2,7 +2,11 @@ from distutils.log import debug
 from fileinput import filename 
 from flask import *  
 import os
+import io
 from imageparse import ImageParse
+from PIL import Image
+import base64
+
 app = Flask(__name__)   
   
 parser=0
@@ -29,9 +33,7 @@ def process():
         parser  = ImageParse(f)
     return render_template("process.html")
 
-@app.route('/success', methods = ['GET','POST'])   
-def success():  
-    pass
+
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5001))
-    app.run(debug=False, host='0.0.0.0', port=port)
+    app.run(debug=True, host='0.0.0.0', port=port)
